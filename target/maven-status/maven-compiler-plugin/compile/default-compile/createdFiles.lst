@@ -1,0 +1,17 @@
+main.class
+PuzzleAndPieces.class
+testRowsNew.class
+OneSolverExclusionNxNnew.class
+PlacementManager.class
+Belegung.class
+OneSolver1xnBorder.class
+RowSolver.class
+PuzzleAndPieces_1xn.class
+PuzzleManager.class
+QuadrantSolver.class
+PuzzleField.class
+PieceByPiece.class
+TwoSolversBorderMiddle.class
+OneSolverExclusionNxN.class
+PuzzlePiece.class
+testStuff.class

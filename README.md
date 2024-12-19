@@ -42,4 +42,4 @@ but when changing the clause to a hradclause, for (input dimension = 6, input fo
 
 the output is: Anzahl ungleicher Nachbarfarben waagerecht: 0
 
-so the solver somehow messes up the calculation with soft clauses for mans inputs, but also gets the solution right for some inputs
+so the solver somehow messes up the calculation with soft clauses for many inputs, but also gets the solution right for some inputs

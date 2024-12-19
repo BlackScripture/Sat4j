@@ -8,13 +8,7 @@ sat4j maven: [https://mvnrepository.com/artifact/org.sat4j](https://mvnrepositor
 sat4j maxsat maven: https://mvnrepository.com/artifact/org.ow2.sat4j/org.ow2.sat4j.maxsat
 
 explanation for the output:
-------------------------------------
-/       0        //       0        /
-/       0        //       0        /
-/  0 0 (29) 2 2  //  2 1 (4) 1 2   /
-/       1        //       2        /
-/       4        //       1        /
-------------------------------------
+![output](https://github.com/user-attachments/assets/ba284700-f6b3-4605-8ec4-c07d83ea5882)
 puzzle piece id: 29
 edges: top, right, bottom, left (color expressed by number, 0 = grey and is to be placed on border) and have to be equal on neighbouring pieces
        0,2,4,0

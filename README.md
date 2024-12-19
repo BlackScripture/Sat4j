@@ -9,6 +9,14 @@ sat4j maxsat maven: https://mvnrepository.com/artifact/org.ow2.sat4j/org.ow2.sat
 
 ---------------------------------------
 
+PuzzleManager.java is for Puzzle creation
+
+PlacementManager.java if for evaluating the solution
+
+OneSolverExclusionNxN.java is for the clauses and solver
+
+---------------
+
 explanation for the output:
 
 ![output](https://github.com/user-attachments/assets/ba284700-f6b3-4605-8ec4-c07d83ea5882)

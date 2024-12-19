@@ -30,32 +30,11 @@ public class OneSolverExclusionNxN {
 
         PuzzleAndPieces puzzleandpieces = puzzlemanager.createPuzzleAndPieces(ersterWert, zweiterWert);
 
-        /*
-        //Testausgabe
-
-        System.out.println(puzzleandpieces.puzzle.length);
-        System.out.println(puzzleandpieces.pieces.length);
-
-        for ( Puzzle field : puzzleandpieces.puzzle){
-            System.out.println("(" + field.x + " " + field.y +")");
-        }
-        for ( PuzzlePiece piece : puzzleandpieces.pieces){
-            System.out.println(piece.piece_id);
-        }
-
-         */
 
         PuzzleField[] fields = puzzleandpieces.puzzle;
         PuzzlePiece[] pieces = puzzleandpieces.pieces;
-
 /*
-        //Ersetze erstes Puzzleteil durch ein Puzzleteil, das in keinem Fall richtig platziert werden kann
-        int[][] newedges = {{9,9,9,9},{9,9,9,9},{9,9,9,9},{9,9,9,9}};
-        int[][] newsymbols = {{9,9,9,9},{9,9,9,9},{9,9,9,9},{9,9,9,9}};
-        pieces[0] = new PuzzlePiece(pieces[0].piece_id, newedges, newsymbols);
-
- */
-
+        //create unsolvable puzzle by changing 1 edge color
         if (pieces[0].edges[0][0] != 0){
             pieces[0].edges[0][0] = pieces[0].edges[0][0] + 1;
             pieces[0].edges[1][1] = pieces[0].edges[1][1] + 1;
@@ -67,6 +46,8 @@ public class OneSolverExclusionNxN {
             pieces[0].edges[2][0] = pieces[0].edges[2][0] + 1;
             pieces[0].edges[3][1] = pieces[0].edges[3][1] + 1;
         }
+
+ */
 
 
 
@@ -101,7 +82,7 @@ public class OneSolverExclusionNxN {
         try {
             // Erstelle Hashmap um später alle Teile in allen Rotationen auf die Felder zu mappen
             Map<String, Integer> varMap = new HashMap<>();
-            int varCount = 1; // Unique Hasmap id
+            int varCount = 1; // Hasmap ID für die einzelnen Variablen
 
             // Variablen definieren, um jedes Feld genau einem Puzzleteil zuzuweisen
             // füge sie anschließend der Hashmap hinzu
@@ -114,7 +95,6 @@ public class OneSolverExclusionNxN {
                     }
                 }
             }
-            //      System.out.println(varMap.toString());
 
             // Klauseln hinzufügen, die sicherstellen, dass jedes Feld genau ein Puzzleteil erhält
             for (int field_index = 0; field_index < fields.length; field_index++) {
@@ -185,93 +165,6 @@ public class OneSolverExclusionNxN {
                 }
                 solver.addHardClause(clause);
             }
-/*
-            // für bspw 3x3 sieht die initialisierung der Felder so aus:
-            // ein field besteht aus (x,y)
-            // field[0]:=(0,0) field[1]:=(0,1) field[2]:=(0,2)
-            // field[3]:=(1,0) field[4]:=(1,1) field[5]:=(1,2)
-            // field[6]:=(2,0) field[7]:=(2,1) field[8]:=(2,2)
-
-            // Benachbarte Felder müssen gleiche Kantenfarben haben
-            for (int field_index = 0; field_index < fields.length; field_index++) { // iteriert über alle Felder die angelegt wurden
-
-                // Nachbar rechts (x, y+1)
-                if (fields[field_index].y + 1 < ersterWert) { // Prüfe, ob das rechte Nachbarfeld im Raster liegt / ersterWert := Dimensionierung n von nxn
-                    for (int piece_index_1 = 0; piece_index_1 < pieces.length; piece_index_1++) {
-                        for (int rotation_piece_1 = 0; rotation_piece_1 < 4; rotation_piece_1++) {
-                            for (int piece_index_2 = 0; piece_index_2 < pieces.length; piece_index_2++) {
-                                for (int rotation_piece_2 = 0; rotation_piece_2 < 4; rotation_piece_2++) {
-                                    // Nur wenn zwei verschiedene Puzzleteile an benachbarten Feldern liegen
-                                    if (piece_index_1 != piece_index_2) {
-                                        // Die Kantenfarben des rechten und linken Puzzleteils müssen übereinstimmen
-                                        int leftVar = varMap.get("field_" + field_index + "_piece_" + pieces[piece_index_1].piece_id + "_rotation_" + rotation_piece_1);
-                                        int rightVar = varMap.get("field_" + (field_index + 1) + "_piece_" + pieces[piece_index_2].piece_id + "_rotation_" + rotation_piece_2);
-                                        if (pieces[piece_index_1].edges[rotation_piece_1][1] != pieces[piece_index_2].edges[rotation_piece_2][3]) {
-                                            solver.addSoftClause(new VecInt(new int[]{-leftVar, -rightVar}));
-                                        } if (pieces[piece_index_1].symbols[rotation_piece_1][1] == pieces[piece_index_2].symbols[rotation_piece_2][3]) {
-                                            solver.addSoftClause(new VecInt(new int[]{-leftVar, -rightVar}));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                // Nachbar unten (x+1, y)
-                if (fields[field_index].x + 1 < ersterWert) { // Prüfe, ob das untere Nachbarfeld im Raster liegt
-                    for (int piece_index_1 = 0; piece_index_1 < pieces.length; piece_index_1++) {
-                        for (int rotation_piece_1 = 0; rotation_piece_1 < 4; rotation_piece_1++) {
-                            for (int piexe_index_2 = 0; piexe_index_2 < pieces.length; piexe_index_2++) {
-                                for (int rotation_piece_2 = 0; rotation_piece_2 < 4; rotation_piece_2++) {
-                                    // Nur wenn zwei verschiedene Puzzleteile an benachbarten Feldern liegen
-                                    if (piece_index_1 != piexe_index_2) {
-                                        // Die Kantenfarben des oberen und unteren Puzzleteils müssen übereinstimmen
-                                        int topVar = varMap.get("field_" + field_index + "_piece_" + pieces[piece_index_1].piece_id + "_rotation_" + rotation_piece_1);
-                                        int bottomVar = varMap.get("field_" + (field_index + ersterWert) + "_piece_" + pieces[piexe_index_2].piece_id + "_rotation_" + rotation_piece_2);
-                                        if (pieces[piece_index_1].edges[rotation_piece_1][2] != pieces[piexe_index_2].edges[rotation_piece_2][0]) {
-                                            solver.addSoftClause(new VecInt(new int[]{-topVar, -bottomVar}));
-                                        }else if (pieces[piece_index_1].symbols[rotation_piece_1][2] == pieces[piexe_index_2].symbols[rotation_piece_2][0]){
-                                            solver.addSoftClause(new VecInt(new int[]{-topVar, -bottomVar}));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
- */
-
-
-/*
-            for ( int field_index = 0; field_index < fields.length; field_index++){ //iteriere über felder
-                if ( fields[field_index].y + 1 < ((int) Math.sqrt(fields.length))){ //prüfe ob der rechte nachbar innerhalb eienr zeile liegt
-                    for ( int piece_index_1 = 0; piece_index_1 < pieces.length; piece_index_1++){ //puzzleteil auf dem gegenwärtigen feld
-                        for (int rotation_piece_1 = 0; rotation_piece_1 < 4; rotation_piece_1++) { //alle rotationen des puzzleteils
-                            for (int piece_index_2 = 0; piece_index_2 < pieces.length; piece_index_2++) { //puzzleteil auf dem rechten nachbarfeld
-                                for (int rotation_piece_2 = 0; rotation_piece_2 < 4; rotation_piece_2++) { //alle rotationen des benachbarten puzzleteils
-                                        if (pieces[piece_index_1].edges[rotation_piece_1][1] != pieces[piece_index_2].edges[rotation_piece_2][3]) { //überprüfe ob die benachbarten kanten der beiden puzzleteile ungleich sind, wenn ja, füge verbotsklausel hinzu
-                                            int rightNeighbour = field_index + 1;
-                                            System.out.println("field_" + field_index + "_piece_" + pieces[piece_index_1].piece_id + "_rotation_" + rotation_piece_1 + "\n" +
-                                                            "field_" + rightNeighbour + "_piece_" + pieces[piece_index_2].piece_id + "_rotation_" + rotation_piece_2 + "\n \n");
-                                            solver.addSoftClause(new VecInt(new int[]{
-                                                    -varMap.get("field_" + field_index + "_piece_" + pieces[piece_index_1].piece_id + "_rotation_" + rotation_piece_1),
-                                                    -varMap.get("field_" + rightNeighbour + "_piece_" + pieces[piece_index_2].piece_id + "_rotation_" + rotation_piece_2)
-                                            }));
-                                            excludeHorizontalColorMismatch++;
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
- */
-
-
-
 
             // Benachbarte Felder müssen gleiche Kantenfarben haben
             for (int field_index = 0; field_index < fields.length; field_index++) {
@@ -290,7 +183,7 @@ public class OneSolverExclusionNxN {
                                         int leftVar = varMap.get("field_" + field_index + "_piece_" + pieces[piece_index_1].piece_id + "_rotation_" + rotation_piece_1);
                                         int rightVar = varMap.get("field_" + (field_index + 1) + "_piece_" + pieces[piece_index_2].piece_id + "_rotation_" + rotation_piece_2);
                                         if (pieces[piece_index_1].edges[rotation_piece_1][1] != pieces[piece_index_2].edges[rotation_piece_2][3]) {
-                                            solver.addSoftClause(fields.length-field_index,new VecInt(new int[]{-leftVar, -rightVar}));
+                                            solver.addSoftClause(new VecInt(new int[]{-leftVar, -rightVar}));
                                             excludeHorizontalColorMismatch++;
                                             if (pieces[piece_index_1].symbols[rotation_piece_1][1] == pieces[piece_index_2].symbols[rotation_piece_2][3]) {
                                                 excludeHorizontalSymbolMismatch++;
@@ -339,120 +232,6 @@ public class OneSolverExclusionNxN {
                  */
 
             }
-
-
-
-
-
-
-
-
-
-
-
-/*
-//positive zuweisung
-            // Benachbarte Felder müssen gleiche Kantenfarben haben
-            for (int field_index = 0; field_index < fields.length; field_index++) {
-                int x = fields[field_index].x;
-                int y = fields[field_index].y;
-
-                // Nachbar rechts (x, y+1)
-                if (y + 1 < ((int) Math.sqrt(fields.length))) { // Prüfe, ob das rechte Nachbarfeld im Raster liegt
-                    for (int piece_index_1 = 0; piece_index_1 < pieces.length; piece_index_1++) {
-                        for (int rotation_piece_1 = 0; rotation_piece_1 < 4; rotation_piece_1++) {
-                            for (int piece_index_2 = 0; piece_index_2 < pieces.length; piece_index_2++) {
-                                for (int rotation_piece_2 = 0; rotation_piece_2 < 4; rotation_piece_2++) {
-                                    // Nur wenn zwei verschiedene Puzzleteile an benachbarten Feldern liegen
-                                    if (piece_index_1 != piece_index_2) {
-                                        // Die Kantenfarben des rechten und linken Puzzleteils müssen übereinstimmen
-                                        int leftVar = varMap.get("field_" + field_index + "_piece_" + pieces[piece_index_1].piece_id + "_rotation_" + rotation_piece_1);
-                                        int rightVar = varMap.get("field_" + (field_index + 1) + "_piece_" + pieces[piece_index_2].piece_id + "_rotation_" + rotation_piece_2);
-                                        if (pieces[piece_index_1].edges[rotation_piece_1][1] == pieces[piece_index_2].edges[rotation_piece_2][3]) {
-                                            solver.addSoftClause(new VecInt(new int[]{leftVar, rightVar}));
-                                            excludeHorizontalColorMismatch++;
-                                        } if (pieces[piece_index_1].symbols[rotation_piece_1][1] != pieces[piece_index_2].symbols[rotation_piece_2][3]) {
-                                            solver.addSoftClause(new VecInt(new int[]{leftVar, rightVar}));
-                                            excludeHorizontalSymbolMismatch++;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Nachbar unten (x+1, y)
-                if (x + 1 < ((int) Math.sqrt(fields.length))) { // Prüfe, ob das untere Nachbarfeld im Raster liegt
-                    for (int piece_index_1 = 0; piece_index_1 < pieces.length; piece_index_1++) {
-                        for (int rotation_piece_1 = 0; rotation_piece_1 < 4; rotation_piece_1++) {
-                            for (int piexe_index_2 = 0; piexe_index_2 < pieces.length; piexe_index_2++) {
-                                for (int rotation_piece_2 = 0; rotation_piece_2 < 4; rotation_piece_2++) {
-                                    // Nur wenn zwei verschiedene Puzzleteile an benachbarten Feldern liegen
-                                    if (piece_index_1 != piexe_index_2) {
-                                        // Die Kantenfarben des oberen und unteren Puzzleteils müssen übereinstimmen
-                                        int topVar = varMap.get("field_" + field_index + "_piece_" + pieces[piece_index_1].piece_id + "_rotation_" + rotation_piece_1);
-                                        int bottomVar = varMap.get("field_" + (field_index + ((int) Math.sqrt(fields.length))) + "_piece_" + pieces[piexe_index_2].piece_id + "_rotation_" + rotation_piece_2);
-                                        if (pieces[piece_index_1].edges[rotation_piece_1][2] == pieces[piexe_index_2].edges[rotation_piece_2][0]) {
-                                            solver.addSoftClause(new VecInt(new int[]{-topVar, bottomVar}));
-                                            solver.addSoftClause(new VecInt(new int[]{topVar, -bottomVar}));
-                                        } if (pieces[piece_index_1].symbols[rotation_piece_1][2] != pieces[piexe_index_2].symbols[rotation_piece_2][0]){
-                                            solver.addSoftClause(new VecInt(new int[]{-topVar, bottomVar}));
-                                            solver.addSoftClause(new VecInt(new int[]{topVar, -bottomVar}));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
- */
-
-
-
-
-
-/*
-
-            // Kantenfarbe 0 muss immer am Rand liegen
-            // verbieten von =0 in Mitte
-            for (int field_index = 0; field_index < fields.length; field_index++) {
-                int x = fields[field_index].x;
-                int y = fields[field_index].y;
-
-                for (int piece_index = 0; piece_index < pieces.length; piece_index++) {
-                    for (int rotation = 0; rotation < 4; rotation++) {
-                        int pieceVar = varMap.get("field_" + field_index + "_piece_" + pieces[piece_index].piece_id + "_rotation_" + rotation);
-
-                        // Prüfe, ob das Puzzleteil eine 0-Kante hat und an einem Randfeld liegt
-                        if (pieces[piece_index].edges[rotation][0] == 0 && x > 0) { // Oberkante
-                            solver.addHardClause( new VecInt(new int[]{-pieceVar}));
-                            excludeUpperBorderGreyPlacementElsewhere++;
-                        }
-                        if (pieces[piece_index].edges[rotation][1] == 0 && y < ( (int) Math.sqrt(fields.length)) -1 ) { // rechte Kante
-                            solver.addHardClause( new VecInt(new int[]{-pieceVar}));
-                            excludeRightBorderGreyPlacementElsewhere++;
-                        }
-                        if (pieces[piece_index].edges[rotation][2] == 0 && x < ( (int) Math.sqrt(fields.length)) -1 ) { // Unterkante
-                            solver.addHardClause(new VecInt(new int[]{-pieceVar}));
-                            excludeBottomBorderGreyPlacementElsewhere++;
-                        }
-                        if (pieces[piece_index].edges[rotation][3] == 0 && y > 0) { // linke Kante
-                            solver.addHardClause( new VecInt(new int[]{-pieceVar}));
-                            excludeLeftBorderGreyPlacementElsewhere++;
-                        }
-                    }
-                }
-            }
-
- */
-
-
-
-
-
 
             // Kantenfarbe 0 muss immer am Rand liegen
             // verbiete Belegung von !=0 am Rand

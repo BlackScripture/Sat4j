@@ -56,7 +56,7 @@ when changing the input to for example (input for dimension = 6, input for color
 
 the output is: Anzahl ungleicher Nachbarfarben waagerecht: 8 even though it should be 0, which can be checked by changing the softclause to a hardclause
 
-but when changing the clause to a hradclause, for (input dimension = 6, input for colors = 5)
+but when changing the clause to a hardclause, for (input dimension = 6, input for colors = 5)
 
 the output is: Anzahl ungleicher Nachbarfarben waagerecht: 0
 

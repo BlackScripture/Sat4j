@@ -15,10 +15,10 @@ explanation for the output:
 
 puzzle piece id: 29
 
-edges: top, right, bottom, left (color expressed by number, 0 = grey and is to be placed on border) and have to be equal on neighbouring pieces
+edges: (outer ring of a piece) top, right, bottom, left (color expressed by number, 0 = grey and is to be placed on border) and have to be equal on neighbouring pieces
 0,2,4,0
        
-symbols: 1 and 2 are the two halfs of an arrow and have to be unequal on neighbouring pieces
+symbols: (inner ing of a piece) 1 and 2 are the two halfs of an arrow and have to be unequal on neighbouring pieces
 
 a seed for the puzzle generation can be set in PuzzleManager.java in line 53
 

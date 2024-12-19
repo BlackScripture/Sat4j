@@ -7,6 +7,12 @@ sat4j maven: [https://mvnrepository.com/artifact/org.sat4j](https://mvnrepositor
 
 sat4j maxsat maven: https://mvnrepository.com/artifact/org.ow2.sat4j/org.ow2.sat4j.maxsat
 
+--------------------------------------
+
+when cloning the repo maven has to be built and compiled, then OnceSolverExclusion should be runnable
+
+![maven](https://github.com/user-attachments/assets/485bc5e1-874f-4e59-b314-8bae21563f96)
+
 ---------------------------------------
 
 PuzzleManager.java is for Puzzle creation
@@ -40,11 +46,15 @@ softclause for horizontal color matching in line 186 in OneSolverExclusionNxN.ja
 
 when generating the puzzle with inputs: (set seed at 64L, input for dimension = 6, input for colors = 6)
 
+![1](https://github.com/user-attachments/assets/c2a83d5a-c2c9-4f10-ac9c-64722233be67)
+
 the output is: Anzahl ungleicher Nachbarfarben waagerecht: 0
 
 when changing the input to for example (input for dimension = 6, input for colors = 5)
 
-the putput is: Anzahl ungleicher Nachbarfarben waagerecht: 8
+![2](https://github.com/user-attachments/assets/13aa781f-51f3-4094-bca6-f16179989fcf)
+
+the output is: Anzahl ungleicher Nachbarfarben waagerecht: 8 even though it should be 0, which can be checked by changing the softclause to a hardclause
 
 but when changing the clause to a hradclause, for (input dimension = 6, input for colors = 5)
 
